@@ -1,9 +1,7 @@
 import requests
-import json
-import threading
 from infi.systray import SysTrayIcon
 from PIL import Image, ImageDraw,ImageFont
-import time
+
 #windows tray icon
 # @see https://github.com/Infinidat/infi.systray
 #open weather API
@@ -24,7 +22,6 @@ PARAMS = ""
 HEADERS = {'Content-type': 'application/json', 'Accept': 'text/plain'}
 
 def checkWeather():
-    #threading.Timer(60.0, checkWeather).start()
     # sending get request and saving the response as response object 
     r = requests.post(url = URL, json = PARAMS, headers = HEADERS) 
 
@@ -36,7 +33,7 @@ def checkWeather():
     return int(data['main']['temp'])
 
 #draw icon
-image= "pil_text.ico"
+image= "icon.ico"
 n=1
 while True:
     #check weather
