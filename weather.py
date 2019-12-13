@@ -11,13 +11,14 @@ from PIL import Image, ImageDraw,ImageFont
 city = "{CITY HERE}"
 country = "US" #two digit code
 units = "metric" #testing or imperial
-
 #api key
 weatherapi_key = "{API_KEY_HERE}"
+
+#build API URL
 URL = "https://api.openweathermap.org/data/2.5/weather?q="+city+","+country+"&units="+units+"&appid="+weatherapi_key
 
 # defining a params dict for the parameters to be sent to the API 
-PARAMS = ""
+PARAMS = "" 
 
 HEADERS = {'Content-type': 'application/json', 'Accept': 'text/plain'}
 
@@ -54,7 +55,7 @@ while True:
         systray.start()
     else:
         systray.update(icon=image)
-    time.sleep(30)
+    time.sleep(120)
     n+=1
 systray.shutdown()
 
