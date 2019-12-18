@@ -1,6 +1,7 @@
 import requests
 from infi.systray import SysTrayIcon
 from PIL import Image, ImageDraw,ImageFont
+import time
 
 #windows tray icon
 # @see https://github.com/Infinidat/infi.systray
@@ -29,7 +30,7 @@ HEADERS = {'Content-type': 'application/json', 'Accept': 'text/plain'}
 def checkWeather():
     global temperature
     global feelslike
-    #threading.Timer(60.0, checkWeather).start()
+
     # sending get request and saving the response as response object 
     r = requests.post(url = URL, json = PARAMS, headers = HEADERS) 
 
