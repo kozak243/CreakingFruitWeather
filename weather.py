@@ -54,23 +54,31 @@ while True:
     #check weather
     temp = checkWeather()
 
+    #text position
+    x = 1
     #adjust size of font
     if len(str(temp)) > 3:
         fontSize = 20
+        y = 12 #height
     elif len(str(temp)) > 2:
         fontSize = 25
+        y = 9 #height
     elif len(str(temp)) > 1:
         fontSize = 35
+        y = 5 #height
+        x = 3 #center
     else:
         fontSize = 40
-        
+        y = 5 #height
+        x = 5
+
     # create image
-    img = Image.new('RGBA', (50, 50), color = (255, 255, 255, 0))  # color background =  white  with transparency
+    img = Image.new('RGBA', (48, 48), color = (255, 255, 255, 0))  # color background =  white  with transparency
     d = ImageDraw.Draw(img)
 
     #add text to the image
     font_type  = ImageFont.truetype("arial.ttf", fontSize)
-    d.text((5,5), str(temp)+"°", fill=(255,255,255), font = font_type)
+    d.text((x,y), str(temp)+"°", fill=(255,255,255), font = font_type)
 
     img.save(image)
 
