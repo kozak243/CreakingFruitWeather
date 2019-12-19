@@ -14,7 +14,7 @@ import tkinter as tk
 city = ""
 country = ""
 units = "metric" #testing or imperial
-useFeelsLike = True;
+useFeelsLike = "True";
 
 temperature = 0
 feelslike = 0
@@ -46,7 +46,7 @@ def checkWeather():
     temperature = int(round(data['main']['temp']))
     feelslike = int(round(data['main']['feels_like']))
 
-    if useFeelsLike == True:
+    if useFeelsLike == "True":
         return feelslike
     else:
         return temperature
