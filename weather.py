@@ -2,6 +2,7 @@ import requests
 from infi.systray import SysTrayIcon
 from PIL import Image, ImageDraw,ImageFont
 import time
+import datetime
 import tkinter as tk
 
 #windows tray icon
@@ -87,31 +88,32 @@ def writeToDbFile():
     outputFile.write(str(chkValue.get()))
 
 '''
+Quick launch from menu option
+'''
+def launch_SettingsWindow(systray):
+    openSettingsWindow()
+'''
 Open settings window
 '''
-def openSettingsWindow(systray):
+def openSettingsWindow():
     master = tk.Tk()
     master.title('Settings')
-    master.geometry("400x200")
+    master.geometry("400x150")
 
     chkValue = tk.BooleanVar()
 
-    tk.Label(master, 
-             text="Openweather.org API Key\t").grid(row=0)
-    tk.Label(master, 
-             text="Your City\t").grid(row=1)
-    tk.Label(master, 
-             text="Your Country (2 Letter Abbr)\t").grid(row=2)
-    tk.Label(master, 
-             text="Use Feels Like Temperature\t").grid(row=3)
+    tk.Label(master, text="Openweather.org API Key\t").grid(sticky=tk.W, row=0)
+    tk.Label(master, text="Your City\t").grid(sticky=tk.W, row=1)
+    tk.Label(master, text="Your Country (2 Letter Abbr)\t").grid(sticky=tk.W, row=2)
+    tk.Label(master, text="Use Feels Like Temperature\t").grid(sticky=tk.W, row=3)
 
-    e1 = tk.Entry(master)
+    e1 = tk.Entry(master, width=30)
     e1.insert(0, weatherapi_key)
 
-    e2 = tk.Entry(master)
+    e2 = tk.Entry(master, width=30)
     e2.insert(0, city)
 
-    e3 = tk.Entry(master)
+    e3 = tk.Entry(master, width=30)
     e3.insert(0, country)
     
     e4 = tk.Checkbutton(master, text='Check Box', var=chkValue)
@@ -121,11 +123,11 @@ def openSettingsWindow(systray):
     e1.grid(row=0, column=1)
     e2.grid(row=1, column=1)
     e3.grid(row=2, column=1)
-    e4.grid(row=3, column=1)
+    e4.grid(row=3, column=1, sticky=tk.W)
 
     tk.Button(master, 
               text='Quit', 
-              command=master.quit).grid(row=5, 
+              command=master.destroy).grid(row=5, 
                                         column=0, 
                                         sticky=tk.W, 
                                         pady=4)
@@ -174,16 +176,18 @@ while True:
 
     img.save(image)
 
+    updateTime = datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S')
+
     #generate text for overlay
-    hover_text = city+" weather\nCurrent Temperature: "+str(temperature)+"°\nFeels like: "+str(feelslike)+"°"
+    hover_text = city+" Weather\nCurrent Temperature: "+str(temperature)+"°\nFeels like: "+str(feelslike)+"°\nLast Updated: "+updateTime
     
     # display image in systray
-    menu_options = (("Settings", None, openSettingsWindow),)
+    menu_options = (("Settings", None, launch_SettingsWindow),)
     if n==1:
         systray = SysTrayIcon(image, hover_text, menu_options)
         systray.start()
     else:
         systray.update(icon=image, hover_text=hover_text)
-    time.sleep(30)
+    time.sleep(120)
     n+=1
 systray.shutdown()
