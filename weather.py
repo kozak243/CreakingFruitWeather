@@ -1,6 +1,6 @@
 import requests
 from infi.systray import SysTrayIcon
-from PIL import Image, ImageDraw,ImageFont
+from PIL import Image, ImageDraw, ImageFont
 import time
 import datetime
 import tkinter as tk
@@ -14,7 +14,7 @@ import tkinter as tk
 
 city = ""
 country = ""
-units = "metric" #testing or imperial
+units = "metric" #metric or imperial
 useFeelsLike = "True";
 
 temperature = 0
@@ -33,24 +33,26 @@ check for updated weather
 def checkWeather():
     global temperature
     global feelslike
+    try:
+        URL = "https://api.openweathermap.org/data/2.5/weather?q="+city+","+country+"&units="+units+"&appid="+weatherapi_key
 
-    URL = "https://api.openweathermap.org/data/2.5/weather?q="+city+","+country+"&units="+units+"&appid="+weatherapi_key
+        # sending get request and saving the response as response object 
+        r = requests.post(url = URL, json = PARAMS, headers = HEADERS) 
 
-    # sending get request and saving the response as response object 
-    r = requests.post(url = URL, json = PARAMS, headers = HEADERS) 
+        # extracting data in json format 
+        data = r.json() 
 
-    # extracting data in json format 
-    data = r.json() 
-
-    # extracting latitude, longitude and formatted address  
-    # of the first matching location
-    temperature = int(round(data['main']['temp']))
-    feelslike = int(round(data['main']['feels_like']))
-
-    if useFeelsLike == "True":
-        return feelslike
-    else:
-        return temperature
+        # extracting latitude, longitude and formatted address  
+        # of the first matching location
+        temperature = int(round(data['main']['temp']))
+        feelslike = int(round(data['main']['feels_like']))
+    
+        if useFeelsLike == "True":
+            return feelslike
+        else:
+            return temperature
+    except:
+        print("Error getting weather")
 
 '''
 read database file for user settings
@@ -77,6 +79,15 @@ def readDbFile():
         print("Please create 'weather.db' first")
         openSettingsWindow() #not yet working
 
+'''
+converting temperature
+'''
+def convertTemp(currentTemp):
+    if units == "metric":
+        return int((currentTemp * 1.8) + 32);
+    else:
+        return int((currentTemp - 32) * .5556);
+    
 '''
 write settings to db file
 '''
@@ -148,6 +159,9 @@ while True:
     #check weather
     temp = checkWeather()
 
+    operator = ("C" if units == "metric" else "F")
+    convOper = ("F" if units == "metric" else "C")
+    
     #text position
     x = 1
     #adjust size of font
@@ -179,7 +193,8 @@ while True:
     updateTime = datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S')
 
     #generate text for overlay
-    hover_text = city+" Weather\nCurrent Temperature: "+str(temperature)+"°\nFeels like: "+str(feelslike)+"°\nLast Updated: "+updateTime
+    hover_text = (city+" Weather\nCurrent Temperature: "+str(temperature)+"°"+operator+" ("+str(convertTemp(temperature))+"°"+convOper+")"
+                  "\nFeels like: "+str(feelslike)+"°"+operator+" ("+str(convertTemp(feelslike))+"°"+convOper+")\nLast Updated: "+updateTime)
     
     # display image in systray
     menu_options = (("Settings", None, launch_SettingsWindow),)
@@ -188,6 +203,6 @@ while True:
         systray.start()
     else:
         systray.update(icon=image, hover_text=hover_text)
-    time.sleep(120)
+    time.sleep(30)
     n+=1
 systray.shutdown()
