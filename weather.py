@@ -193,7 +193,7 @@ while True:
     updateTime = datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S')
 
     #generate text for overlay
-    hover_text = (city+" Weather\nCurrent Temperature: "+str(temperature)+"°"+operator+" ("+str(convertTemp(temperature))+"°"+convOper+")"
+    hover_text = (city.title()+" Weather\nCurrent Temperature: "+str(temperature)+"°"+operator+" ("+str(convertTemp(temperature))+"°"+convOper+")"
                   "\nFeels like: "+str(feelslike)+"°"+operator+" ("+str(convertTemp(feelslike))+"°"+convOper+")\nLast Updated: "+updateTime)
     
     # display image in systray
