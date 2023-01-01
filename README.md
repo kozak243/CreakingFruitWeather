@@ -14,5 +14,5 @@ Install requests
 PIL
 > pip install Pillow
 
-Weather data provided by:
-> https://openweathermap.org/
+Weather data provided by: 
+https://wttr.in/ & https://api.met.no/weatherapi/documentation
