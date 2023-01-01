@@ -15,4 +15,4 @@ PIL
 > pip install Pillow
 
 Weather data provided by: 
-https://wttr.in/ & https://api.met.no/weatherapi/documentation
+https://wttr.in/ & https://api.open-meteo.com/
