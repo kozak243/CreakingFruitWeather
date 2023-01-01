@@ -1,4 +1,4 @@
-# windowsWeatherTray
+# Creaking Fruit Weather
 Windows weather icon in the system tray, made in python
 
 Install PIP:
@@ -16,3 +16,6 @@ PIL
 
 Weather data provided by: 
 https://wttr.in/ & https://api.open-meteo.com/
+
+Using font:
+https://github.com/dtinth/comic-mono-font
